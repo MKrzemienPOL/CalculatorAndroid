@@ -28,7 +28,7 @@ public class HistoryActivity extends Fragment {
     @SuppressLint("StaticFieldLeak")
     List<Result> mResults = new ArrayList<>();
     RecyclerView recyclerView;
-    Button refreshBtn;
+    Button refreshBtn, clearBtn;
     SimpleListAdapter adapter;
 
     HistoryActivity(){}
@@ -40,6 +40,7 @@ public class HistoryActivity extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerView);
         refreshBtn = view.findViewById(R.id.refreshBtn);
+        clearBtn = view.findViewById(R.id.clearBtn);
 
         AppDatabase appDatabase = Room.databaseBuilder(view.getContext(),AppDatabase.class,"database").
                 allowMainThreadQueries().build();
@@ -48,7 +49,6 @@ public class HistoryActivity extends Fragment {
         mResults = resultDao.getResults();
         Collections.reverse(mResults);
 
-        resultDao.clearTable();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         adapter = new SimpleListAdapter(mResults);
@@ -93,6 +93,17 @@ public class HistoryActivity extends Fragment {
 
                 graph.removeAllSeries();
                 graph.addSeries(seriesGraph);
+            }
+        });
+
+        clearBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resultDao.clearTable();
+                graph.removeAllSeries();
+                mResults = resultDao.getResults();
+                Collections.reverse(mResults);
+                adapter.updateHistory(mResults);
             }
         });
 

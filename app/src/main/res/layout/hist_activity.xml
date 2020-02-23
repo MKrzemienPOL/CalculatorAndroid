@@ -23,6 +23,12 @@
         android:layout_height="51dp"
         android:text="Odśwież" />
 
+    <Button
+        android:id="@+id/clearBtn"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:text="Wyczyść" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
